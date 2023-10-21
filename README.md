@@ -1,2 +1,0 @@
-# MPR
-Metody programowania
