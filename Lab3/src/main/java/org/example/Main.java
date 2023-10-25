@@ -4,34 +4,40 @@ import org.example.cars.Car;
 import org.example.cars.Type;
 import org.example.services.RentalService;
 import org.example.storage.CarStorage;
-import org.example.rental.Rental;
-import org.example.storage.RentalStorage;
 import org.example.user.User;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
+        //Format date
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        //car storage, add cars
         CarStorage.getInstance().addCar(new Car("Fiat", "Bravo","asdasd", Type.STANDARD));
         CarStorage.getInstance().addCar(new Car("Audi","A3", "wafasf", Type.PREMIUM));
+
+        //create user
         User Dominik = new User(1);
 
-        Date dateFrom = new Date(2023,11,13);
-        Date dateTo = new Date(2023,12,29);
+        //Rental date
+        Date dateFrom = sdf.parse("2023-11-13");
+        Date dateTo = sdf.parse("2023-12-29");
 
-        Date dateFrom1 = new Date(2023,10,13);
-        Date dateTo1 = new Date(2023,12,29);
+        Date dateFrom1 = sdf.parse("2023-10-13");
+        Date dateTo1 = sdf.parse("2023-12-29");
 
-        Date dateFrom2 = new Date(2023,12,13);
-        Date dateTo2 = new Date(2024,12,29);
+        Date dateFrom2 = sdf.parse("2023-12-13");
+        Date dateTo2 = sdf.parse("2024-12-29");
 
+        //Services
         RentalService rentalService = new RentalService();
         rentalService.rent(Dominik, "asdasd", dateFrom , dateTo);
         rentalService.isAvailable("asdasd", dateFrom1,dateTo1);
         rentalService.rent(Dominik, "asdasd", dateFrom1, dateTo1);
-        //todo rentalService.isAvailable(vin, dateFrom, dateTo)
-        //todo rentalService.estimatePrice(vin, dateFrom, dateTo)
-
+        rentalService.estimataePrice("asdasd", dateFrom, dateTo);
 
     }
 }
