@@ -25,6 +25,18 @@ public class RentalService {
         } else {
             System.out.println("Podałeś nieprawidłowy vin");
         }
+
+        if(findCar(vin) != null){
+            if (checkAvailable(vin, dateFrom, dateTo)) {
+                Rental rental = new Rental(user, findCar(vin) ,dateFrom, dateTo);
+                RentalStorage.getInstance().addRental(rental);
+                System.out.println("Udało się zarezerwowac auto");
+            } else if (!checkAvailable(vin, dateFrom, dateTo)) {
+                System.out.println("Auto jest zarezerwowane w tym terminie");
+            }
+        } else {
+            System.out.println("Podałeś nieprawidłowy vin");
+        }
     }
 
     //check rental status
