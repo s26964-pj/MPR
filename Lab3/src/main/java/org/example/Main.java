@@ -2,7 +2,7 @@ package org.example;
 
 import org.example.cars.Car;
 import org.example.cars.Type;
-import org.example.services.RentalServiceStream;
+import org.example.services.RentalService;
 import org.example.storage.CarStorage;
 import org.example.user.User;
 
@@ -33,17 +33,15 @@ public class Main {
         Date dateTo2 = sdf.parse("2024-12-29");
 
         //Services
-        //RentalService rentalService = new RentalService();
-        //rentalService.rent(Dominik, "asdasd", dateFrom , dateTo);
-        //rentalService.isAvailable("asdasd", dateFrom1,dateTo1);
-        //rentalService.rent(Dominik, "asdasd", dateFrom1, dateTo1);
-        //rentalService.estimataePrice("asdasd", dateFrom, dateTo);
-
-        RentalServiceStream rentalServiceStream = new RentalServiceStream();
-
-        rentalServiceStream.rent(Dominik,"asdasd", dateFrom , dateTo);
-        rentalServiceStream.isAvailable("asdasd", dateFrom2,dateTo2);
-        rentalServiceStream.rent(Dominik,"asdasd", dateFrom2, dateTo2);
+        RentalService rentalService = new RentalService();
+        rentalService.rent(Dominik, "asdasd", dateFrom , dateTo);
+        System.out.println("---------------------------------------");
+        rentalService.isAvailable("asdasd", dateFrom2,dateTo1);
+        System.out.println("---------------------------------------");
+        rentalService.rent(Dominik, "asdasd", dateFrom1, dateTo1);
+        System.out.println("---------------------------------------");
+        rentalService.estimataePrice("asdasd", dateFrom, dateTo);
+        System.out.println("---------------------------------------");
 
     }
 }
