@@ -7,88 +7,63 @@ import org.example.storage.CarStorage;
 import org.example.storage.RentalStorage;
 import org.example.user.User;
 
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 public class RentalService {
+    private final CarStorage carStorage;
+    private final RentalStorage rentalStorage;
 
-    //rent
-    public void rent(User user, String vin, Date dateFrom, Date dateTo) {
-        if (findCarByVin(vin) != null) {
-            if (checkAvailable(vin, dateFrom, dateTo)) {
-                Rental rental = new Rental(user, findCarByVin(vin), dateFrom, dateTo);
-                RentalStorage.getInstance().addRental(rental);
-                System.out.println("Udało się zarezerwowac auto");
-            } else if (!checkAvailable(vin, dateFrom, dateTo)) {
-                System.out.println("Auto jest zarezerwowane w tym terminie");
+    public RentalService(CarStorage carStorage, RentalStorage rentalStorage) {
+        this.carStorage = carStorage;
+        this.rentalStorage = rentalStorage;
+    }
+
+    /*public boolean isAvailable(String vin, LocalDate startDate, LocalDate endDate) {
+        Car carByVin = carStorage.findCarByVin(vin).orElseThrow();
+
+        List<Rental> rentalsForVin = rentalStorage.findRentalByVin(vin);
+
+        if (rentalsForVin.isEmpty()) {
+            return true;
+        }
+        for (Rental rental : rentalsForVin) {
+            if (isBetween(rental.getStartRental(), rental.getEndRental(), startDate) || isBetween(rental.getStartRental(), rental.getEndRental(), endDate)) {
+                return false;
             }
-        } else {
-            System.out.println("Podałeś nieprawidłowy vin");
-        }
-    }
-
-    //check rental status
-
-    public void isAvailable(String vin, Date dateFrom, Date dateTo) {
-        if (checkAvailable(vin, dateFrom, dateTo) == true) {
-            System.out.println("Auto jest dostępne");
-        } else {
-            System.out.println("Auto jest niedostępne");
-        }
-    }
-
-    public boolean checkAvailable(String vin, Date dateFrom, Date dateTo) {
-        if (findCarByVin(vin) != null) {
-            if (findRentalByVin(vin) == null) {
-                return true;
-            } else {
-                if (findRentalByVin(vin).getEndRental().after(dateTo)) {
-                    return false;
-                } else if (findRentalByVin(vin).getEndRental().before(dateTo)) {
-                    return true;
-                }
+            if (isBetween(startDate, endDate, rental.getStartRental()) || isBetween(startDate, endDate, rental.getEndRental())) {
+                return false;
             }
-            return false;
+        }
+        return true;
+    }*/
+
+    private boolean isBetween(LocalDate periodStart, LocalDate periodEnd, LocalDate checkingDate) {
+        return checkingDate.isAfter(periodStart) && checkingDate.isBefore(periodEnd);
+    }
+
+    /*public Rental rentCar(int userId, String vin, LocalDate startDate, LocalDate endDate) {
+        Car carByVin = carStorage.findCarByVin(vin).orElseThrow();
+        if (isAvailable(vin, startDate, endDate)) {
+            double price = estimatePrice(vin, startDate, endDate);
+            Rental rental = new Rental(new User(userId), carByVin, startDate, endDate, price);
+            rentalStorage.addRental(rental);
+            return rental;
         } else {
-            return false;
+            throw new RuntimeException();
         }
-    }
+    }*/
 
-    //calculate Price
-
-    public void estimataePrice(String vin, Date dateFrom, Date dateTo) {
-
-        double cena = 0;
-        long roznicaCzasu = dateTo.getTime() - dateFrom.getTime();
-        long roznicaDni = roznicaCzasu / (1000 * 60 * 60 * 24);
-
-        if (findCarByVin(vin).getType().equals(Type.ECONOMY)) {
-            cena = roznicaDni * 200;
-        } else if (findCarByVin(vin).getType().equals(Type.PREMIUM)) {
-            cena = roznicaDni * 500;
-        } else if (findCarByVin(vin).getType().equals(Type.STANDARD)) {
-            cena = roznicaDni * 350;
-        }
-        System.out.println("Cena wynajmu będzie wynosić około: " + cena + " zł");
-        System.out.printf("roznica dni " + roznicaDni);
-    }
-
-    //Find car and rental
-    private Car findCarByVin(String vin) {
-        return CarStorage.getInstance()
-                .getAllCars()
-                .stream()
-                .filter(car -> car.getVin().equals(vin))
-                .findFirst()
-                .orElse(null);
-    }
-
-    private Rental findRentalByVin(String vin) {
-        return RentalStorage.getInstance()
-                .getAllRental()
-                .stream()
-                .filter(rental -> rental.getCar().equals(findCarByVin(vin)))
-                .findFirst()
-                .orElse(null);
+    public double estimatePrice(String vin, LocalDate startDate, LocalDate endDate) {
+        Optional<Car> carByVin = carStorage.findCarByVin(vin);
+        Car car = carByVin.orElseThrow();
+        double multiplier = car.getType().getMultiplier();
+        long daysBetween = Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
+        return 500 * multiplier * daysBetween;
     }
 }

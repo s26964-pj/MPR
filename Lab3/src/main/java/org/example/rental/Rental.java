@@ -3,19 +3,22 @@ package org.example.rental;
 import org.example.cars.Car;
 import org.example.user.User;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Rental {
     private User user;
     private Car car;
-    private Date startRental;
-    private Date endRental;
+    private LocalDate startRental;
+    private LocalDate endRental;
+    private double price;
 
-    public Rental(User user, Car car, Date startRental, Date endRental) {
+    public Rental(User user, Car car, LocalDate startRental, LocalDate endRental, double price) {
         this.user = user;
         this.car = car;
         this.startRental = startRental;
         this.endRental = endRental;
+        this.price = price;
     }
 
     public User getUser() {
@@ -34,19 +37,19 @@ public class Rental {
         this.car = car;
     }
 
-    public Date getStartRental() {
+    public LocalDate getStartRental() {
         return startRental;
     }
 
-    public void setStartRental(Date startRental) {
+    public void setStartRental(LocalDate startRental) {
         this.startRental = startRental;
     }
 
-    public Date getEndRental() {
+    public LocalDate getEndRental() {
         return endRental;
     }
 
-    public void setEndRental(Date endRental) {
+    public void setEndRental(LocalDate endRental) {
         this.endRental = endRental;
     }
 

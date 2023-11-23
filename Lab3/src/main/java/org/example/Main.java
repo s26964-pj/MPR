@@ -4,16 +4,21 @@ import org.example.cars.Car;
 import org.example.cars.Type;
 import org.example.services.RentalService;
 import org.example.storage.CarStorage;
+import org.example.storage.RentalStorage;
 import org.example.user.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Main {
     public static void main(String[] args) throws ParseException {
-        //Format date
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        RentalStorage rentalStorage = RentalStorage.getInstance();
+        CarStorage carStorage = CarStorage.getInstance();
+
+        //Services
+        RentalService rentalService = new RentalService(carStorage, rentalStorage);
 
         //car storage, add cars
         CarStorage.getInstance().addCar(new Car("Fiat", "Bravo","asdasd", Type.STANDARD));
@@ -23,25 +28,6 @@ public class Main {
         User Dominik = new User(1);
 
         //Rental date
-        Date dateFrom = sdf.parse("2023-11-13");
-        Date dateTo = sdf.parse("2023-12-29");
-
-        Date dateFrom1 = sdf.parse("2023-10-13");
-        Date dateTo1 = sdf.parse("2023-12-29");
-
-        Date dateFrom2 = sdf.parse("2023-12-30");
-        Date dateTo2 = sdf.parse("2024-12-29");
-
-        //Services
-        RentalService rentalService = new RentalService();
-        rentalService.rent(Dominik, "asdasd", dateFrom , dateTo);
-        System.out.println("---------------------------------------");
-        rentalService.isAvailable("asdasd", dateFrom2,dateTo1);
-        System.out.println("---------------------------------------");
-        rentalService.rent(Dominik, "asdasd", dateFrom1, dateTo1);
-        System.out.println("---------------------------------------");
-        rentalService.estimataePrice("asdasd", dateFrom, dateTo);
-        System.out.println("---------------------------------------");
 
     }
 }

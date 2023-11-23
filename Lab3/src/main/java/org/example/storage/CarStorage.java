@@ -2,6 +2,7 @@ package org.example.storage;
 import org.example.cars.Car;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CarStorage {
     private List<Car> cars = new ArrayList<>();
@@ -21,6 +22,19 @@ public class CarStorage {
             instance = new CarStorage();
         }
         return instance;
+    }
+    public Optional<Car> findCarByVin(String vin){
+        return getAllCars()
+                .stream()
+                .filter(car -> car.getVin().equals(vin))
+                .findFirst();
+    }
+    public List<String> getCarNames(String randomName) {
+        return List.of("Honda", "Skoda");
+    }
+
+    public void purgeDatabase() {
+        cars.clear();
     }
 }
 
