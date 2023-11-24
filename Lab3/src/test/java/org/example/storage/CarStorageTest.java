@@ -41,5 +41,4 @@ public class CarStorageTest{
         //THEN
         assertThat(allCars).hasSize(1);
     }
-
 }

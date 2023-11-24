@@ -18,7 +18,7 @@ class CarServiceTest{
     @Mock
     private CarStorage carStorage;
     @InjectMocks
-    private CarService carService = new CarService(carStorage);
+    private CarService carService;
 
     @Test void shouldFindFirstCarName() {
         when(carStorage.getCarNames(stringArgumentCaptor.capture()))
