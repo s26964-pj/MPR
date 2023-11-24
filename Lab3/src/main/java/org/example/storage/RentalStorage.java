@@ -6,6 +6,7 @@ import org.example.rental.Rental;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class RentalStorage {
     private List<Rental> rentals = new ArrayList<>();
@@ -25,10 +26,10 @@ public class RentalStorage {
         }
         return instance;
     }
-    public Optional<Rental> findRentalByVin(String vin) {
+    public List<Rental> findRentalByVin(String vin) {
         return getAllRental()
                 .stream()
                 .filter(rental -> rental.getCar().getVin().equals(vin))
-                .findFirst();
+                .collect(Collectors.toList());
     }
 }

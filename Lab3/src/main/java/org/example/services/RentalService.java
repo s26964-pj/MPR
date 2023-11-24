@@ -24,7 +24,7 @@ public class RentalService {
         this.rentalStorage = rentalStorage;
     }
 
-    /*public boolean isAvailable(String vin, LocalDate startDate, LocalDate endDate) {
+    public boolean isAvailable(String vin, LocalDate startDate, LocalDate endDate) {
         Car carByVin = carStorage.findCarByVin(vin).orElseThrow();
 
         List<Rental> rentalsForVin = rentalStorage.findRentalByVin(vin);
@@ -41,13 +41,13 @@ public class RentalService {
             }
         }
         return true;
-    }*/
+    }
 
     private boolean isBetween(LocalDate periodStart, LocalDate periodEnd, LocalDate checkingDate) {
         return checkingDate.isAfter(periodStart) && checkingDate.isBefore(periodEnd);
     }
 
-    /*public Rental rentCar(int userId, String vin, LocalDate startDate, LocalDate endDate) {
+    public Rental rentCar(int userId, String vin, LocalDate startDate, LocalDate endDate) {
         Car carByVin = carStorage.findCarByVin(vin).orElseThrow();
         if (isAvailable(vin, startDate, endDate)) {
             double price = estimatePrice(vin, startDate, endDate);
@@ -57,7 +57,7 @@ public class RentalService {
         } else {
             throw new RuntimeException();
         }
-    }*/
+    }
 
     public double estimatePrice(String vin, LocalDate startDate, LocalDate endDate) {
         Optional<Car> carByVin = carStorage.findCarByVin(vin);

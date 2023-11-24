@@ -8,6 +8,9 @@ public class CarService {
         this.carStorage = carStorage;
     }
     public String getFirstCarName() {
-        return carStorage.getCarNames("ABC").stream() .findFirst() .orElse("INVALID");
+        return carStorage.getCarNames("ABC")
+                .stream()
+                .findFirst()
+                .orElse("INVALID");
     }
 }

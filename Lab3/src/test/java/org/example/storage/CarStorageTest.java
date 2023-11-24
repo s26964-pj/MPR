@@ -1,8 +1,8 @@
 package org.example.storage;
 
-import junit.framework.TestCase;
 import org.example.cars.Car;
 import org.example.cars.Type;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CarStorageTest extends TestCase {
+public class CarStorageTest{
     private CarStorage carStorage = CarStorage.getInstance();
 
     @BeforeEach
