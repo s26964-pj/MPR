@@ -32,4 +32,7 @@ public class RentalStorage {
                 .filter(rental -> rental.getCar().getVin().equals(vin))
                 .collect(Collectors.toList());
     }
+    public void purgeDatabase(){
+        rentals.clear();
+    }
 }

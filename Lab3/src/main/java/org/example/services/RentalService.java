@@ -64,6 +64,9 @@ public class RentalService {
         Car car = carByVin.orElseThrow();
         double multiplier = car.getType().getMultiplier();
         long daysBetween = Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
+        if(daysBetween <=1){
+            throw new RuntimeException("Invalid dates");
+        }
         return 500 * multiplier * daysBetween;
     }
 }

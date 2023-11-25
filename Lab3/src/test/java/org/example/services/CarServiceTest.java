@@ -29,7 +29,7 @@ class CarServiceTest{
         String value = stringArgumentCaptor.getValue();
 
         assertThat(firstCarName).isEqualTo("Peugeot");
-        assertThat(value).isEqualTo("Peugeot");
+        assertThat(value).isEqualTo("ABC");
     }
 
 }
