@@ -1,6 +1,5 @@
 package org.example.services;
 
-import net.bytebuddy.asm.Advice;
 import org.example.cars.Car;
 import org.example.cars.Type;
 import org.example.rental.Rental;
@@ -10,18 +9,20 @@ import org.example.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.*;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDate;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 class RentalServiceTest {
-    private CarStorage carStorage = CarStorage.getInstance();
-    private RentalStorage rentalStorage = RentalStorage.getInstance();
-    private RentalService rentalService = new RentalService(carStorage, rentalStorage);
+    private final CarStorage carStorage = CarStorage.getInstance();
+    private final RentalStorage rentalStorage = RentalStorage.getInstance();
+    private final RentalService rentalService = new RentalService(carStorage, rentalStorage);
 
     @BeforeEach
     void cleanUp() {
