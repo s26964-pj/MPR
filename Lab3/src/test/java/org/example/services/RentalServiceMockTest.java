@@ -3,7 +3,6 @@ package org.example.services;
 import org.example.cars.Car;
 import org.example.cars.Type;
 import org.example.rental.Rental;
-import org.example.services.RentalService;
 import org.example.storage.CarStorage;
 import org.example.storage.RentalStorage;
 import org.example.user.User;
@@ -30,7 +29,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class RentalServiceMockTest{
     @InjectMocks
-    private RentalService rentalServiceMoj;
+    private RentalService rentalService;
     @Mock
     private RentalStorage rentalStorage;
     @Mock
@@ -48,7 +47,7 @@ class RentalServiceMockTest{
         //when
         when(carStorage.findCarByVin(vin)).thenReturn(Optional.of(car));
         when(rentalStorage.findRentalByVin(vin)).thenReturn(rentalList);
-        boolean available = rentalServiceMoj.isAvailable(vin, dateFrom, dateTo);
+        boolean available = rentalService.isAvailable(vin, dateFrom, dateTo);
 
         //then
         assertEquals(Boolean.TRUE, available);
@@ -66,7 +65,7 @@ class RentalServiceMockTest{
         //when
         when(carStorage.findCarByVin(vin)).thenReturn(Optional.of(car));
         when(rentalStorage.findRentalByVin(vin)).thenReturn(rentalList);
-        boolean available = rentalServiceMoj.isAvailable(vin, dateFrom, dateTo);
+        boolean available = rentalService.isAvailable(vin, dateFrom, dateTo);
 
         //then
         assertEquals(Boolean.FALSE, available);
@@ -84,7 +83,7 @@ class RentalServiceMockTest{
         //when
         when(carStorage.findCarByVin(vin)).thenReturn(Optional.of(car));
         when(rentalStorage.findRentalByVin(vin)).thenReturn(rentalList);
-        boolean available = rentalServiceMoj.isAvailable(vin, dateFrom, dateTo);
+        boolean available = rentalService.isAvailable(vin, dateFrom, dateTo);
 
         //then
         assertEquals(Boolean.TRUE, available);
@@ -101,7 +100,7 @@ class RentalServiceMockTest{
         //when
         when(carStorage.findCarByVin(vin)).thenReturn(Optional.of(car));
         when(rentalStorage.findRentalByVin(vin)).thenReturn(rentalList);
-        boolean available = rentalServiceMoj.isAvailable(vin, startDate, endDate);
+        boolean available = rentalService.isAvailable(vin, startDate, endDate);
 
         //then
         assertEquals(Boolean.FALSE, available);
@@ -111,12 +110,12 @@ class RentalServiceMockTest{
     void rentCar_returns_true() {
         //given
         Car car = createCar();
-        LocalDate dateFrom = LocalDate.of(2023, 12, 7);
-        LocalDate dateTo = LocalDate.of(2023, 12, 9);
+        LocalDate dateFrom = LocalDate.of(2023, 12, 10);
+        LocalDate dateTo = LocalDate.of(2023, 12, 12);
 
         //when
         when(carStorage.findCarByVin(car.getVin())).thenReturn(Optional.of(car));
-        Rental rental = rentalServiceMoj.rentCar(1, car.getVin(), dateFrom, dateTo);
+        Rental rental = rentalService.rentCar(1, car.getVin(), dateFrom, dateTo);
 
         //then
         assertEquals(rental.getCar(), car);
@@ -135,7 +134,7 @@ class RentalServiceMockTest{
         //then
         assertThatExceptionOfType(RuntimeException.class)
                 .isThrownBy(
-                        () -> rentalServiceMoj.rentCar(1, car.getVin(), dateFrom, dateTo));
+                        () -> rentalService.rentCar(1, car.getVin(), dateFrom, dateTo));
     }
 
     @ParameterizedTest
@@ -150,7 +149,7 @@ class RentalServiceMockTest{
         //then
         assertThatExceptionOfType(RuntimeException.class)
                 .isThrownBy(
-                        () -> rentalServiceMoj.estimatePrice(car.getVin(), dateFrom, dateTo));
+                        () -> rentalService.estimatePrice(car.getVin(), dateFrom, dateTo));
     }
 
     @ParameterizedTest
@@ -161,7 +160,7 @@ class RentalServiceMockTest{
         List<Rental> rentalList = createRentalList();
         when(carStorage.findCarByVin(vin)).thenReturn(Optional.of(car));
         when(rentalStorage.findRentalByVin(vin)).thenReturn(rentalList);
-        boolean available = rentalServiceMoj.isAvailable("123456789", startDate, endDate);
+        boolean available = rentalService.isAvailable("123456789", startDate, endDate);
 
         assertThat(available).isTrue();
     }

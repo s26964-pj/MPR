@@ -4,7 +4,6 @@ import org.example.cars.Car;
 import org.example.user.User;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Rental {
     private User user;

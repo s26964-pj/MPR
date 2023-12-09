@@ -1,20 +1,17 @@
 package org.example.services;
 
 import org.example.cars.Car;
-import org.example.cars.Type;
 import org.example.rental.Rental;
 import org.example.storage.CarStorage;
 import org.example.storage.RentalStorage;
 import org.example.user.User;
+import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class RentalService {
     private final CarStorage carStorage;
     private final RentalStorage rentalStorage;
@@ -28,6 +25,10 @@ public class RentalService {
         Car carByVin = carStorage.findCarByVin(vin).orElseThrow();
 
         List<Rental> rentalsForVin = rentalStorage.findRentalByVin(vin);
+
+        if (startDate.isBefore(LocalDate.now()) || endDate.isBefore(LocalDate.now())) {
+            return false;
+        }
 
         if (rentalsForVin.isEmpty()) {
             return true;
@@ -60,12 +61,11 @@ public class RentalService {
     }
 
     public double estimatePrice(String vin, LocalDate startDate, LocalDate endDate) {
-        Optional<Car> carByVin = carStorage.findCarByVin(vin);
-        Car car = carByVin.orElseThrow();
+        Car car = carStorage.findCarByVin(vin).orElseThrow();
         double multiplier = car.getType().getMultiplier();
         long daysBetween = Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
-        if(daysBetween <=1){
-            throw new RuntimeException("Invalid dates");
+        if (daysBetween < 0) {
+            throw new RuntimeException("Invalid data");
         }
         return 500 * multiplier * daysBetween;
     }
