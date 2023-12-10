@@ -7,7 +7,7 @@ import java.util.UUID;
 public class Order {
     private int orderID;
     private int clientID;
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItem> orderItems;
     private OrderStatus orderStatus;
 
     public Order(int orderID ,int clientID, List<OrderItem> orderItems) {
@@ -47,5 +47,15 @@ public class Order {
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderID=" + orderID +
+                ", clientID=" + clientID +
+                ", orderItems=" + orderItems +
+                ", orderStatus=" + orderStatus +
+                '}';
     }
 }
