@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServicesTest {
@@ -34,8 +34,17 @@ class OrderServicesTest {
     }
 
     @Test
-    void should(){
-        
+    void should() {
+        //given
+        Order order = newOrder();
+
+        //when
+        when(orderStorage.findOrderById(anyInt())).thenReturn(Optional.of(order));
+
+        orderServices.placeOrder(anyInt(),anyInt(),order.getOrderItems());
+
+        //then
+        verify(orderStorage, times(1)).findOrderById(anyInt());
     }
 
 
@@ -43,11 +52,18 @@ class OrderServicesTest {
         return new Order(
                 1,
                 2,
-                List.of(new OrderItem(
-                        new Product(
-                                "Jajecznica",
-                                BigDecimal.valueOf(17)),
-                        5)
+                List.of(
+                        new OrderItem(
+                                new Product(
+                                        "Jajecznica",
+                                        BigDecimal.valueOf(17)),
+                                5),
+                        new OrderItem(
+                                new Product(
+                                        "Zapiekanka",
+                                        BigDecimal.valueOf(18)),
+                                1
+                        )
                 )
         );
     }
