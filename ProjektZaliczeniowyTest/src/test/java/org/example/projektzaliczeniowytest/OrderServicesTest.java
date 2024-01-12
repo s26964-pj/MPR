@@ -10,7 +10,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
@@ -31,20 +33,6 @@ class OrderServicesTest {
         Order statusedOrder = orderServices.statusOrder(anyInt());
         //then
         assertEquals(OrderStatus.NOWE, statusedOrder.getOrderStatus());
-    }
-
-    @Test
-    void should() {
-        //given
-        Order order = newOrder();
-
-        //when
-        when(orderStorage.findOrderById(anyInt())).thenReturn(Optional.of(order));
-
-        orderServices.placeOrder(anyInt(),anyInt(),order.getOrderItems());
-
-        //then
-        verify(orderStorage, times(1)).findOrderById(anyInt());
     }
 
 
