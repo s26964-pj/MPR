@@ -26,10 +26,10 @@ public class OrderServices {
 
 
     //anulowanie zamówienia
-    public Optional<Order> calncelOrder(int orderID) {
+    public Order calncelOrder(int orderID) {
         Order order = getOrder(orderID);
         if (order.getOrderStatus().equals(OrderStatus.W_REALIZACJI)) {
-            return new RuntimeException("Order is in progress");
+            return order;
         }
         order.setOrderStatus(OrderStatus.ANULOWANE);
         return order;
