@@ -7,14 +7,13 @@ import org.example.storage.CarStorage;
 import org.example.storage.RentalStorage;
 import org.example.user.User;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,13 +25,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOf
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-class RentalServiceMockTest {
-    @InjectMocks
+@SpringBootTest
+class ITMockTest {
+    @Autowired
     private RentalService rentalService;
-    @Mock
+    @MockBean
     private RentalStorage rentalStorage;
-    @Mock
+    @MockBean
     private CarStorage carStorage;
 
     @Test
