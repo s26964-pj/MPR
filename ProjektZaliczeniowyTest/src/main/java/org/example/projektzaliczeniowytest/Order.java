@@ -7,14 +7,24 @@ import java.util.UUID;
 public class Order {
     private int orderID;
     private int clientID;
-    private List<OrderItem> orderItems;
+    private List<Item> itemsList;
+    private String adress;
     private OrderStatus orderStatus;
 
-    public Order(int orderID ,int clientID, List<OrderItem> orderItems) {
+    public Order(int orderID ,int clientID, List<Item> orderItems, String adress) {
         this.orderID = orderID;
         this.clientID = clientID;
-        this.orderItems = orderItems;
+        this.itemsList = orderItems;
+        this.adress = adress;
         this.orderStatus = OrderStatus.NOWE;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
     }
 
     public int getOrderID() {
@@ -33,12 +43,12 @@ public class Order {
         clientID = clientID;
     }
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
+    public List<Item> getItemsList() {
+        return itemsList;
     }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
+    public void setItemsList(List<Item> itemsList) {
+        this.itemsList = itemsList;
     }
 
     public OrderStatus getOrderStatus() {
@@ -54,7 +64,7 @@ public class Order {
         return "Order{" +
                 "orderID=" + orderID +
                 ", clientID=" + clientID +
-                ", orderItems=" + orderItems +
+                ", orderItems=" + itemsList +
                 ", orderStatus=" + orderStatus +
                 '}';
     }

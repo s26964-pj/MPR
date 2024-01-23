@@ -7,12 +7,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
@@ -23,36 +23,50 @@ class OrderServicesTest {
     OrderServices orderServices;
     @Mock
     OrderStorage orderStorage;
+    @Mock
+    ProductStorage productStorage;
 
     @Test
-    void shouldOrderHasNewStatus() {
-        //given
-        Order order = newOrder();
-        //when
-        when(orderStorage.findOrderById(anyInt())).thenReturn(Optional.of(order));
-        Order statusedOrder = orderServices.statusOrder(anyInt());
-        //then
-        assertEquals(OrderStatus.NOWE, statusedOrder.getOrderStatus());
+    void shouldCreateOrder() {
+        int orderID = 1;
+        int clientID = 2;
+        List<Item> items = new ArrayList<>(List.of(
+                new Item("Zurek", 1)));
+        String address = "ul. Testowa 123";
+
+        when(productStorage.getProductByName(anyString())).thenReturn(Optional.of(
+                new Product("Zurek", 5)
+        ));
+
+        Optional<Order> result = orderServices.placeOrder(orderID,clientID,items,address);
+
+        assertTrue(result.isPresent());
     }
 
+    @Test
+    void shouldNotCreateOrder() {
+        int orderID = 1;
+        int clientID = 2;
+        List<Item> items = new ArrayList<>(List.of(
+                new Item("Zurek", 7)));
+        String address = "ul. Testowa 123";
+
+        when(productStorage.getProductByName(anyString())).thenReturn(Optional.of(
+                new Product("Zurek", 5)
+        ));
+
+        Optional<Order> result = orderServices.placeOrder(orderID,clientID,items,address);
+
+        assertFalse(result.isPresent());
+    }
 
     private Order newOrder() {
         return new Order(
                 1,
                 2,
-                List.of(
-                        new OrderItem(
-                                new Product(
-                                        "Jajecznica",
-                                        BigDecimal.valueOf(17)),
-                                5),
-                        new OrderItem(
-                                new Product(
-                                        "Zapiekanka",
-                                        BigDecimal.valueOf(18)),
-                                1
-                        )
-                )
-        );
+                new ArrayList<>(List.of(
+                        new Item("Jajecznica", 5),
+                        new Item("Zurek", 15)))
+                , "Gdańsk, Polna");
     }
 }
