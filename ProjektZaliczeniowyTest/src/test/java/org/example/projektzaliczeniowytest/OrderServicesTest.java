@@ -20,11 +20,11 @@ import static org.mockito.Mockito.*;
 class OrderServicesTest {
 
     @InjectMocks
-    OrderServices orderServices;
+    private OrderServices orderServices;
     @Mock
-    OrderStorage orderStorage;
+    private OrderStorage orderStorage;
     @Mock
-    ProductStorage productStorage;
+    private ProductStorage productStorage;
 
     @Test
     void shouldCreateOrder() {

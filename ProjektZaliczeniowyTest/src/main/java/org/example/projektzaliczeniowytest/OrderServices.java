@@ -52,16 +52,11 @@ public class OrderServices {
         boolean allProductsAvailable = items.stream()
                 .allMatch(item -> {
                     int quantity = item.getQuantity();
-                    Optional<Product> productOptional = productStorage.getProductByName(item.getProductName());
+                    Product product = productStorage.getProductByName(item.getProductName()).orElseThrow(() -> new RuntimeException("Nie ma takiego produktu"));
 
-                    if (productOptional.isEmpty()) {
-                        return false;
-                    }
-
-                    Product product = productOptional.get();
                     int availableQuantity = product.getQuantity();
 
-                    if (quantity > availableQuantity) {
+                    if (availableQuantity <= quantity) {
                         return false;
                     } else {
                         product.setQuantity(availableQuantity - quantity);
@@ -88,16 +83,13 @@ public class OrderServices {
     //Anulowanie zamowienia
 
     public String orderCancel(int orderId){
-        Optional<Order> order = orderStorage.findOrderById(orderId);
-        if (order == null) {
-            return "Nie znaleziono zamówienia o podanym identyfikatorze.";
-        }
+        Order order = orderStorage.findOrderById(orderId).orElseThrow(() -> new RuntimeException("Nie znaleziono zamówienia o podanym identyfikatorze."));
 
-        if (order.get().getOrderStatus() == OrderStatus.W_REALIZACJI) {
+        if (order.getOrderStatus() == OrderStatus.W_REALIZACJI) {
             return "Nie można anulować zamówienia w trakcie realizacji.";
         }
 
-        orderStorage.delete(orderId);
+        order.setOrderStatus(OrderStatus.ANULOWANE);
         return "Zamówienie zostało anulowane.";
     }
 
